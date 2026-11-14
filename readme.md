@@ -61,7 +61,7 @@ The TypeScript integration tests are in `escrow.t.ts`.
 ### Install
 
 ```bash
-git clone (https://github.com/Armaansaxena/Solana-anchor-escrow)
+git clone https://github.com/Armaansaxena/Solana-anchor-escrow
 cd Solana-anchor-escrow
 npm install   
 ```

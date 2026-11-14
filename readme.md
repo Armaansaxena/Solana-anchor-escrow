@@ -1,42 +1,82 @@
-# Assignment 3 – Anchor Escrow (Turbin3 Pre-Builder)
+# Solana Anchor Escrow
 
-This project is part of the Turbin3 Pre-Builder Assignment 2 focused on building a secure, trustless Escrow program on Solana using the Anchor framework.
+A trustless token escrow program on Solana, written in Rust with the Anchor framework. A maker locks token A and names the amount of token B they want in return; a taker completes the swap, or the maker cancels and gets their tokens back. Built as part of the Turbin3 Pre-Builder program.
 
-## Tasks Completed
+**Status:** Educational project, not audited. Do not use with real funds.
 
-* Implemented a full-featured trustless escrow contract from scratch using modern Anchor idioms.
-* Created a modular architecture by isolating individual instruction handlers into separate modules.
-* Implemented secure token management, allowing Maker to lock token A to exchange for a specific amount of token B from Taker.
-* Managed automated Cross-Program Invocations (CPI) with the Solana SPL Token Program for transfers and account authority manipulation.
-* Handled full life-cycle instructions including initialization (`make`), execution (`take`), and cancellation (`refund`).
-* Covered all core scenarios with a robust TypeScript integration test suite.
+## How it works
 
-## Tech Stack
+| Instruction | Who | What it does |
+|-------------|-----|--------------|
+| `make` | Maker | Initializes the escrow and locks the maker's token A |
+| `take` | Taker | Executes the trade: swaps the assets between maker and taker, then closes the escrow state |
+| `refund` | Maker | Cancels the escrow and returns the locked tokens to the maker |
 
-* Solana
-* Anchor Framework
-* Rust
-* TypeScript
-* @coral-xyz/anchor
-* @solana/spl-token
-* @solana/web3.js
+The program makes Cross-Program Invocations (CPI) to the SPL Token program for transfers and account authority handling.
 
-## Project Structure
+## Features
 
-```text
+- Full escrow lifecycle: create (`make`), complete (`take`) and cancel (`refund`)
+- Modular design with each instruction handler in its own module
+- Secure token management through CPI with the SPL Token program
+- TypeScript integration tests covering the core scenarios
+
+## Tech stack
+
+- Solana
+- Anchor framework
+- Rust
+- TypeScript
+- `@coral-xyz/anchor`
+- `@solana/spl-token`
+- `@solana/web3.js`
+
+## Project structure
+
+```
 .
 ├── programs/
 │   └── anchor-escrow/
 │       ├── Cargo.toml
-│       ├── src/
-│       │   ├── instructions/     # Decoupled escrow instruction handlers
-│       │   │   ├── make.rs       # Initializes escrow and locks Maker's tokens
-│       │   │   ├── refund.rs     # Cancels escrow and returns tokens to Maker
-│       │   │   └── take.rs       # Executes trade, swaps assets, and closes state
-│       │   ├── lib.rs            # Program entrypoint and routing
-│       │   └── mod.rs            # Instruction module exports
-│       └── tests/                # TypeScript integration test suite located alongside src
-│           └── escrow.t.ts
-├── Anchor.toml                  # Anchor configuration setup
-└── README.md                    # Project documentation
-└── README.md                    # Project documentation
+│       └── src/
+│           ├── lib.rs            # Program entrypoint and routing
+│           └── instructions/
+│               ├── make.rs       # Initializes escrow, locks maker's tokens
+│               ├── take.rs       # Executes the swap and closes state
+│               └── refund.rs     # Cancels escrow, returns tokens to maker
+├── Anchor.toml
+└── README.md
+```
+
+The TypeScript integration tests are in `escrow.t.ts`.
+
+## Getting started
+
+### Prerequisites
+
+- Rust and the Solana CLI
+- Anchor CLI, using the version pinned in `Anchor.toml`
+- Node.js and Yarn or npm
+
+### Install
+
+```bash
+git clone (https://github.com/Armaansaxena/Solana-anchor-escrow)
+cd Solana-anchor-escrow
+npm install   
+```
+
+### Run the tests
+
+```bash
+anchor test
+```
+
+## Known limitations
+
+- Not audited. This is a learning project.
+- Single-trade escrows only: one maker, one taker and a fixed token pair per escrow.
+
+## Author
+
+Armaan Saxena. [GitHub](https://github.com/Armaansaxena)
